@@ -1,5 +1,6 @@
 package com.cadastroveiculos.cadvei.controllers;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,13 @@ public class VeiculoController {
     public List<Veiculo> findAll(){
         return service.findAll();
     }
-    
+		   
+	@GetMapping(value = "/quantitynotsold")
+	public String quantityNotSold()
+	{
+		return service.quantityNotSold();
+	}
+	
 	@GetMapping(value = "/veiculos")
 	public List<Veiculo> findByMarcaAndAnoAndCor(@RequestParam(name = "marca", required = false) String marca,
 	                                             @RequestParam(name = "ano", required = false) Integer ano,
@@ -46,13 +53,13 @@ public class VeiculoController {
 		
 	@PostMapping
 	public Veiculo Insert(@RequestBody Veiculo veiculo){
-		Veiculo result = service.Insert(veiculo);
+		Veiculo result = service.insert(veiculo);
 		return result;
 	}
 	
 	@PutMapping("/{id}")
-	public Veiculo Update(@PathVariable Long id, @RequestBody Veiculo veiculo){
-	    Veiculo result = service.Update(id, veiculo);
+	public Veiculo Update(@PathVariable Long id, @RequestBody Veiculo veiculo) throws Exception, InvocationTargetException{
+	    Veiculo result = service.update(id, veiculo);
 	    return result;
 	}
 
@@ -66,7 +73,7 @@ public class VeiculoController {
 	    String descricao = (String) camposAtualizados.get("descricao");
 	    boolean vendido = (boolean) camposAtualizados.get("vendido");
 
-	    return service.UpdateInstallment(id, veiculo, marca, cor, ano, descricao, vendido);
+	    return service.updateInstallment(id, veiculo, marca, cor, ano, descricao, vendido);
 	}
 
 	

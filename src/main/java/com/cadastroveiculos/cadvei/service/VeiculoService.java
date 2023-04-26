@@ -22,19 +22,23 @@ public class VeiculoService {
 	}
 	
 	public List<Veiculo> findByMarcaAndAnoAndCor(String marca, Integer ano, String cor) {
-	    return repository.findByMarcaAndAnoAndCor(marca, ano, cor);	    
+	    return repository.findByMarcaAndAnoAndCor(marca, ano, cor);
 	}
 
 	public Veiculo findById(Long id){
 		return repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Cadastro nao encontrado"));
 	}
 	
-	public Veiculo Insert(@RequestBody Veiculo veiculo){
+	public List<Veiculo> findByVendidoFalse() {
+	    return repository.findByVendidoFalse();
+	}
+		
+	public Veiculo insert(@RequestBody Veiculo veiculo){
 		Veiculo result = repository.save(veiculo);
 		return result;
 	}
-	
-	public Veiculo Update(Long id, Veiculo veiculo) {
+		
+	public Veiculo update(Long id, Veiculo veiculo) {
 	    Veiculo existingVeiculo = repository.findById(id)
 	        .orElseThrow(() -> new ResourceNotFoundException("Cadastro não encontrado"));
 
@@ -49,7 +53,7 @@ public class VeiculoService {
 	    return updatedVeiculo;
 	}
 	
-	public Veiculo UpdateInstallment(Long id, String veiculo, Marcas marca, String cor, Integer ano, String descricao, boolean vendido) {
+	public Veiculo updateInstallment(Long id, String veiculo, Marcas marca, String cor, Integer ano, String descricao, boolean vendido) {
 	    Veiculo veiculoAtualizado = repository.findById(id)
 	            .orElseThrow(() -> new ResourceNotFoundException("Cadastro nao encontrado"));
 
@@ -79,8 +83,18 @@ public class VeiculoService {
 	}
 	
 	public void deleteById(Long id) {
-		repository.deleteById(id);
-		
+		repository.deleteById(id);		
 	}
+	
+	public String quantityNotSold()
+	{
+		return "Total de veículos não vendidos: " + countVendidoFalse();
+	}
+
+	private long countVendidoFalse() {
+		return repository.countByVendidoFalse();
+	}
+	
+	
 
 }
