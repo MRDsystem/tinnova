@@ -7,92 +7,124 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name =  "tbl_veiculos")
+@Table(name = "tbl_veiculos")
 public class Veiculo {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	private String veiculo;
-	private String marca;
-	private Integer ano;
-	private String descricao;
-	private boolean vendido;
-	
-	@Column(name = "created")
-	private LocalDate created;
-	
-	@Column(name = "updated")
-	private LocalDate updated;
-	
-	public Veiculo() {
-	}
-	
-	public long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    
+    private String veiculo;
+    
+    @NotNull(message = "A marca do veículo deve ser informada.")
+    private Marcas marca;
+    
+    private String cor;
+    
+    private Integer ano;
+    
+    private String descricao;
+    
+    private boolean vendido;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    @Column(name = "created")
+    private LocalDate created;
 
-	public String getVeiculo() {
-		return veiculo;
-	}
+    @Column(name = "updated")
+    private LocalDate updated;
 
-	public void setVeiculo(String veiculo) {
-		this.veiculo = veiculo;
-	}
+    @PrePersist
+    protected void onCreate() {
+        created = LocalDate.now();
+    }
 
-	public String getMarca() {
-		return marca;
-	}
+    @PreUpdate
+    protected void onUpdate() {
+        updated = LocalDate.now();
+    }
 
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
+    public Veiculo() {
+    }
 
-	public Integer getAno() {
-		return ano;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setAno(Integer ano) {
-		this.ano = ano;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public String getDescricao() {
-		return descricao;
-	}
+    public String getVeiculo() {
+        return veiculo;
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setVeiculo(String veiculo) {
+        this.veiculo = veiculo;
+    }
 
-	public boolean isVendido() {
-		return vendido;
-	}
+    public Marcas getMarca() {
+        return marca;
+    }
 
-	public void setVendido(boolean vendido) {
-		this.vendido = vendido;
-	}
+    public void setMarca(Marcas marca) {
+        this.marca = marca;
+    }
 
-	public LocalDate getCreated() {
-		return created;
-	}
+    public String getCor() {
+        return cor;
+    }
 
-	public void setCreated(LocalDate created) {
-		this.created = created;
-	}
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
 
-	public LocalDate getUpdated() {
-		return updated;
-	}
+    public Integer getAno() {
+        return ano;
+    }
 
-	public void setUpdated(LocalDate updated) {
-		this.updated = updated;
-	}	
-	
+    public void setAno(Integer ano) {
+        this.ano = ano;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public boolean isVendido() {
+        return vendido;
+    }
+
+    public void setVendido(boolean vendido) {
+        this.vendido = vendido;
+    }
+
+    public LocalDate getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDate created) {
+        this.created = created;
+    }
+
+    public LocalDate getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDate updated) {
+        this.updated = updated;
+    }
+
+    public enum Marcas {
+        Ford, Chevrolet, Fiat, Volkswagen, Renault 
+    }
 }
